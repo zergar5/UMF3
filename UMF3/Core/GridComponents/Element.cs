@@ -1,7 +1,4 @@
-﻿using KursachOneDim.Models.Local;
-using KursachOneDim.Tools.Providers;
-
-namespace KursachOneDim.Models.GridComponents;
+﻿namespace UMF3.Core.GridComponents;
 
 public class Element
 {

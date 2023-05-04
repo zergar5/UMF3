@@ -1,6 +1,4 @@
-﻿using KursachOneDim.Models.GridComponents;
-
-namespace KursachOneDim.Models.Global;
+﻿namespace UMF3.Core.Global;
 
 public record struct GlobalMatrix(int N, double[] DI, double[] GG, int[] IG)
 {

@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "GridGenerator": {
-      "commandName": "Project",
-      "workingDirectory": "..\\GridGenerator"
-    }
-  }
-}

@@ -1,4 +1,4 @@
-﻿namespace KursachOneDim.Models.Global;
+﻿namespace UMF3.Core.Global;
 
 public struct GlobalVector
 {

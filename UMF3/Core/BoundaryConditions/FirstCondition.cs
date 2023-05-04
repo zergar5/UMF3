@@ -1,3 +1,3 @@
-﻿namespace KursachOneDim.Models.BoundaryConditions;
+﻿namespace UMF3.Core.BoundaryConditions;
 
-public readonly record struct FirstCondition(int GlobalNodeNumber, double U);
+public readonly record struct FirstCondition(int[] GlobalNodeNumbers, double[] Us);

@@ -1,6 +1,10 @@
 {
   "profiles": {
-    "KursachOneDim": {
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    },
+    "UMF3": {
       "commandName": "Project",
       "workingDirectory": "..\\UMF3"
     }

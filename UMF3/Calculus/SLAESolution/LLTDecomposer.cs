@@ -1,4 +1,4 @@
-﻿using KursachOneDim.Models.Global;
+﻿using UMF3.Core.Global;
 
 namespace KursachOneDim.Calculus.SLAESolution;
 

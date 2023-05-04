@@ -14,7 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Factories\" />
+    <Folder Include="FEM\Assembling\" />
+    <Folder Include="GridGenerator\" />
+    <Folder Include="ThreeDimensional\Assembling\Local\" />
+    <Folder Include="ThreeDimensional\MatrixTemplates\" />
   </ItemGroup>
 
 </Project>

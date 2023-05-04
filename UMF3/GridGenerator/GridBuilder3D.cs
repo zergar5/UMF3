@@ -1,6 +1,6 @@
 ﻿using GridGenerator.Area.Splitting;
-using KursachOneDim.Models.GridComponents;
 using UMF3.Core;
+using UMF3.Core.GridComponents;
 
 namespace GridGenerator;
 

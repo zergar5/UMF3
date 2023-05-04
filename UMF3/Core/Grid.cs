@@ -1,4 +1,4 @@
-﻿using KursachOneDim.Models.GridComponents;
+﻿using UMF3.Core.GridComponents;
 
 namespace UMF3.Core;
 

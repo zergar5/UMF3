@@ -1,5 +1,5 @@
-﻿using KursachOneDim.Models.BoundaryConditions;
-using KursachOneDim.Models.Global;
+﻿using UMF3.Core.BoundaryConditions;
+using UMF3.Core.Global;
 
 namespace KursachOneDim.Tools.Assemblers.BoundaryConditions;
 

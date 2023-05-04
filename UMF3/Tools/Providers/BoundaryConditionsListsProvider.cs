@@ -1,4 +1,4 @@
-﻿using KursachOneDim.Models.BoundaryConditions;
+﻿using UMF3.Core.BoundaryConditions;
 
 namespace KursachOneDim.Tools.Providers;
 
