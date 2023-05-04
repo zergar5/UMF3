@@ -1,6 +1,5 @@
 ﻿using GridGenerator.Area.Splitting;
 using KursachOneDim.Models.GridComponents;
-using System;
 using UMF3.Core;
 
 namespace GridGenerator;
@@ -101,7 +100,7 @@ public class GridBuilder3D : IGridBuilder<Node3D>
                                         _materialsId[elementIndex]
                                         );
                                 }
-                                
+
                                 k++;
                             }
                         }
