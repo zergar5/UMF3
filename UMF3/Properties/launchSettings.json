@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "KursachOneDim": {
+      "commandName": "Project",
+      "workingDirectory": "..\\UMF3"
+    }
+  }
+}
