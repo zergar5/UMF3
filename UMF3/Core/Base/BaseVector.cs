@@ -1,4 +1,4 @@
-﻿namespace UMF3.Core.Local;
+﻿namespace UMF3.Core.Base;
 
 public class BaseVector
 {

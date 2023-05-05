@@ -14,9 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="FEM\Assembling\" />
     <Folder Include="GridGenerator\" />
-    <Folder Include="ThreeDimensional\Assembling\Local\" />
+    <Folder Include="SLAE\Preconditions\LU\" />
+    <Folder Include="SLAE\Solvers\BSGSTAB\" />
+    <Folder Include="SLAE\Solvers\LU\" />
     <Folder Include="ThreeDimensional\MatrixTemplates\" />
   </ItemGroup>
 

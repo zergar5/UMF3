@@ -83,8 +83,8 @@ public class LocalAssembler : ILocalAssembler
 
         for (var i = 0; i < element.NodesIndexes.Length; i++)
         {
-            indexes[i * 2] = element.NodesIndexes[i];
-            indexes[i * 2 + 1] = element.NodesIndexes[i] + 1;
+            indexes[i * 2] = 2 * element.NodesIndexes[i];
+            indexes[i * 2 + 1] = indexes[i * 2] + 1;
         }
 
         return indexes;

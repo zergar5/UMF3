@@ -1,8 +1,9 @@
-﻿using UMF3.Core.GridComponents;
+﻿using UMF3.Core;
+using UMF3.Core.GridComponents;
 
 namespace UMF3.FEM.Assembling;
 
-public interface IMatrixPortraitBuilder<out TMatrix>
+public interface IMatrixPortraitBuilder<TNode, out TMatrix>
 {
-    TMatrix Build(IEnumerable<Element> elements, int nodesCount);
+    TMatrix Build(Grid<TNode> grid);
 }

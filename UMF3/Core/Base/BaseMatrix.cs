@@ -49,7 +49,7 @@ public class BaseMatrix
 
     public static BaseVector operator *(BaseMatrix matrix, BaseVector vector)
     {
-        var localVector = new LocalVector(vector.Count);
+        var localVector = new BaseVector(vector.Count);
 
         if (matrix.CountRows != vector.Count)
         {
