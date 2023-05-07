@@ -1,8 +1,8 @@
 ﻿using GridGenerator;
 using GridGenerator.Area.Splitting;
-using UMF3.Core.Converters;
 using UMF3.Core.Global;
 using UMF3.Core.GridComponents;
+using UMF3.SLAE.Preconditions.LU;
 using UMF3.ThreeDimensional.Assembling;
 using UMF3.ThreeDimensional.Assembling.Boundary;
 using UMF3.ThreeDimensional.Assembling.Global;
@@ -80,6 +80,14 @@ var equation = globalAssembler
     .ApplyFirstConditions(firstConditions)
     .BuildEquation();
 
-var profileMatrix = MatricesConverter.Convert(equation.Matrix);
+var sparseMatrix = new SparseMatrix
+(
+    new[] { 0, 0, 1, 2, 4 },
+    new[] { 0, 0, 0, 1 },
+    new[] { 1d, 1d, 1d, 1d },
+    new[] { 2d, 2d, 2d, 2d },
+    new[] { 3d, 3d, 3d, 3d }
+);
+sparseMatrix = new LUPreconditioner().Decompose(sparseMatrix);
 
 Console.WriteLine();

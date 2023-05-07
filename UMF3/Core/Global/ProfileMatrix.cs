@@ -42,43 +42,47 @@ public class ProfileMatrix
 
     public ProfileMatrix LU()
     {
-        //for (var i = 0; i < CountRows; i++)
-        //{
-        //    var j = i - (ig[i + 1] - ig[i]);
+        for (var i = 0; i < CountRows; i++)
+        {
+            var j = i - (RowsIndexes[i + 1] - RowsIndexes[i]);
 
-        //    var sumD = 0d;
+            var sumD = 0d;
 
-        //    for (var ij = ig[i]; ij < ig[i + 1]; ij++, j++)
-        //    {
-        //        var sumL = 0d;
+            for (var ij = RowsIndexes[i]; ij < RowsIndexes[i + 1]; ij++, j++)
+            {
+                var sumL = 0d;
+                var sumU = 0d;
 
-        //        var ik = i - (ig[i + 1] - ig[i]);
-        //        var jk = j - (ig[j + 1] - ig[j]);
+                var ik = i - (RowsIndexes[i + 1] - RowsIndexes[i]);
+                var jk = j - (RowsIndexes[j + 1] - RowsIndexes[j]);
 
-        //        var k = Math.Max(ik, jk);
+                var k = Math.Max(ik, jk);
 
-        //        if (ik >= jk)
-        //        {
-        //            jk = ig[j] + (ik - jk);
-        //            ik = ig[i];
-        //        }
-        //        else
-        //        {
-        //            jk = ig[j];
-        //            ik = ig[i] + (jk - ik);
-        //        }
+                if (ik >= jk)
+                {
+                    jk = RowsIndexes[j] + (ik - jk);
+                    ik = RowsIndexes[i];
+                }
+                else
+                {
+                    jk = RowsIndexes[j];
+                    ik = RowsIndexes[i] + (jk - ik);
+                }
 
-        //        for (; k < j; k++, ik++, jk++)
-        //        {
-        //            sumL += gg[ik] * gg[jk];
-        //        }
+                for (; k < j; k++, ik++, jk++)
+                {
+                    sumL += LowerValues[ik] * UpperValues[jk];
+                    sumU += LowerValues[jk] * UpperValues[ik];
+                }
 
-        //        gg[ij] = (gg[ij] - sumL) / di[j];
-        //        sumD += gg[ij] * gg[ij];
-        //    }
+                LowerValues[ij] -= sumL;
+                UpperValues[ij] = (UpperValues[ij] - sumU) / Diagonal[j];
 
-        //    di[i] = Math.Sqrt(di[i] - sumD);
-        //}
+                sumD += LowerValues[ij] * UpperValues[ij];
+            }
+
+            Diagonal[i] -= sumD;
+        }
 
         return this;
     }
