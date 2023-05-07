@@ -1,8 +1,8 @@
 ﻿namespace UMF3.Core.Global;
 
-public struct GlobalVector
+public class GlobalVector
 {
-    public double[] Vector { get; set; }
+    public double[] Vector { get; }
 
     public GlobalVector()
     {
@@ -26,6 +26,7 @@ public struct GlobalVector
     }
 
     public int Count => Vector.Length;
+    public double Norm => Math.Sqrt(ScalarProduct(this, this));
 
     public static GlobalVector operator *(double coefficient, GlobalVector localVector)
     {
@@ -38,8 +39,6 @@ public struct GlobalVector
 
         return vector;
     }
-
-    public double CalcNorm() => Math.Sqrt(ScalarProduct(this, this));
 
     public GlobalVector Clone()
     {
@@ -64,7 +63,7 @@ public struct GlobalVector
         return ScalarProduct(this, vector);
     }
 
-    public static GlobalVector SumVectors(GlobalVector localVector1, GlobalVector localVector2)
+    public static GlobalVector Sum(GlobalVector localVector1, GlobalVector localVector2)
     {
         if (localVector1.Count != localVector2.Count) throw new Exception("Can't sum vectors");
 
@@ -76,7 +75,7 @@ public struct GlobalVector
         return localVector2;
     }
 
-    public static GlobalVector SubtractVectors(GlobalVector localVector1, GlobalVector localVector2)
+    public static GlobalVector Subtract(GlobalVector localVector1, GlobalVector localVector2)
     {
         if (localVector1.Count != localVector2.Count) throw new Exception("Can't sum vectors");
 

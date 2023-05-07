@@ -1,4 +1,5 @@
-﻿using UMF3.Core;
+﻿using System.Numerics;
+using UMF3.Core;
 using UMF3.Core.BoundaryConditions;
 using UMF3.Core.GridComponents;
 
@@ -17,17 +18,25 @@ public class FirstBoundaryProvider
         _uC=uC;
     }
 
-    public FirstCondition[] GetConditions(int[] nodesIndexes)
+    public FirstCondition[] GetConditions(int[] elementsIndexes, Bound[] bounds)
     {
-        var conditions = new List<FirstCondition>(nodesIndexes.Length * 2);
+        var conditions = new List<FirstCondition>(elementsIndexes.Length);
 
-        conditions.
-            AddRange(nodesIndexes.
-            Select(index => new FirstCondition(index * 2, GetSValue(index))));
+        for (var i = 0; i < elementsIndexes.Length; i++)
+        {
+            var (indexes, _) = _grid.Elements[elementsIndexes[i]].GetBoundNodeIndexes(bounds[i]);
 
-        conditions.
-            AddRange(nodesIndexes.
-                Select(index => new FirstCondition(index * 2 + 1, GetCValue(index))));
+            var complexIndexes = GetComplexIndexes(indexes);
+            var values = new double[complexIndexes.Length];
+
+            for (var j = 0; j < indexes.Length; j++)
+            {
+                values[j * 2] = _uS(_grid.Nodes[indexes[j]]);
+                values[j * 2 + 1] = _uC(_grid.Nodes[indexes[j]]);
+            }
+
+            conditions.Add(new FirstCondition(complexIndexes, values));
+        }
 
         return conditions.ToArray();
     }
@@ -40,5 +49,18 @@ public class FirstBoundaryProvider
     public double GetCValue(int index)
     {
         return _uC(_grid.Nodes[index]);
+    }
+
+    private int[] GetComplexIndexes(int[] indexes)
+    {
+        var complexIndexes = new int[indexes.Length * 2];
+
+        for (var i = 0; i < indexes.Length; i++)
+        {
+            complexIndexes[i * 2] = indexes[i] * 2;
+            complexIndexes[i * 2 + 1] = indexes[i] * 2 + 1;
+        }
+
+        return complexIndexes;
     }
 }

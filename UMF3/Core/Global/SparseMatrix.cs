@@ -1,4 +1,6 @@
-﻿namespace UMF3.Core.Global;
+﻿using UMF3.Core.Local;
+
+namespace UMF3.Core.Global;
 
 public class SparseMatrix
 {
@@ -7,6 +9,12 @@ public class SparseMatrix
     public double[] UpperValues { get; set; }
     public int[] RowsIndexes { get; }
     public int[] ColumnsIndexes { get; }
+
+    public int CountRows => Diagonal.Length;
+    public int CountColumns => Diagonal.Length;
+    public int this[int rowIndex, int columnIndex] =>
+        Array.IndexOf(ColumnsIndexes, columnIndex, RowsIndexes[rowIndex],
+            RowsIndexes[rowIndex + 1] - RowsIndexes[rowIndex]);
 
     public SparseMatrix(int[] rowsIndexes, int[] columnsIndexes)
     {
@@ -17,6 +25,22 @@ public class SparseMatrix
         ColumnsIndexes = columnsIndexes;
     }
 
+    public SparseMatrix
+    (
+        int[] rowsIndexes,
+        int[] columnsIndexes,
+        double[] diagonal,
+        double[] lowerValues,
+        double[] upperValues
+    )
+    {
+        RowsIndexes = rowsIndexes;
+        ColumnsIndexes = columnsIndexes;
+        Diagonal = diagonal;
+        LowerValues = lowerValues;
+        UpperValues = upperValues;
+    }
+
     public static GlobalVector operator *(SparseMatrix matrix, GlobalVector vector)
     {
         var rowsIndexes = matrix.RowsIndexes;
@@ -25,9 +49,9 @@ public class SparseMatrix
         var lowerValues = matrix.LowerValues;
         var upperValues = matrix.UpperValues;
 
-        var result = new GlobalVector(matrix.Diagonal.Length);
+        var result = new GlobalVector(matrix.CountRows);
 
-        for (var i = 0; i < matrix.Diagonal.Length; i++)
+        for (var i = 0; i < matrix.CountRows; i++)
         {
             result[i] += di[i] * vector[i];
 
@@ -39,5 +63,22 @@ public class SparseMatrix
         }
 
         return result;
+    }
+
+    public SparseMatrix Clone()
+    {
+        var rowIndexes = new int[RowsIndexes.Length];
+        var columnIndexes = new int[ColumnsIndexes.Length];
+        var diagonal = new double[Diagonal.Length];
+        var lowerValues = new double[LowerValues.Length];
+        var upperValues = new double[UpperValues.Length];
+
+        Array.Copy(RowsIndexes, rowIndexes, RowsIndexes.Length);
+        Array.Copy(ColumnsIndexes, columnIndexes, ColumnsIndexes.Length);
+        Array.Copy(Diagonal, diagonal, Diagonal.Length);
+        Array.Copy(LowerValues, lowerValues, LowerValues.Length);
+        Array.Copy(UpperValues, upperValues, UpperValues.Length);
+
+        return new SparseMatrix(rowIndexes, columnIndexes, diagonal, lowerValues, upperValues);
     }
 }

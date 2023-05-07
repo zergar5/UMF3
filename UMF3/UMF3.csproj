@@ -14,10 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Core\Converters\" />
+    <Folder Include="FEM\Assembling\Global\" />
     <Folder Include="GridGenerator\" />
     <Folder Include="SLAE\Preconditions\LU\" />
-    <Folder Include="SLAE\Solvers\BSGSTAB\" />
-    <Folder Include="SLAE\Solvers\LU\" />
     <Folder Include="ThreeDimensional\MatrixTemplates\" />
   </ItemGroup>
 

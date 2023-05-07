@@ -14,9 +14,9 @@ public class Inserter : IInserter<SparseMatrix>
         {
             for (var j = 0; j < i; j++)
             {
-                var elementIndex = Array.IndexOf(globalMatrix.ColumnsIndexes, nodesIndexes[j], globalMatrix.RowsIndexes[nodesIndexes[i]],
-                    globalMatrix.RowsIndexes[nodesIndexes[i] + 1] - globalMatrix.RowsIndexes[nodesIndexes[i]]);
+                var elementIndex = globalMatrix[i, j];
 
+                if (elementIndex == -1) continue;
                 globalMatrix.LowerValues[elementIndex] += localMatrix[i, j];
                 globalMatrix.UpperValues[elementIndex] += localMatrix[j, i];
             }

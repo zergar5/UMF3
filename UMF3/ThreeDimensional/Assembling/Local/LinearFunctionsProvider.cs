@@ -1,4 +1,4 @@
-﻿namespace KursachOneDim.Tools.Providers;
+﻿namespace UMF3.ThreeDimensional.Assembling.Local;
 
 public class LinearFunctionsProvider
 {

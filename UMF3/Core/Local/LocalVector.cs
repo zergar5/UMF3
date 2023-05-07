@@ -21,5 +21,5 @@ public class LocalVector
         set => Vector[index] = value;
     }
 
-    public IEnumerator<double> GetEnumerator() => ((IEnumerable<double>)Vector).GetEnumerator();
+    public IEnumerator<double> GetEnumerator() => Vector.GetEnumerator();
 }
