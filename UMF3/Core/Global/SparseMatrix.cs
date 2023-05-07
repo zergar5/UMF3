@@ -24,7 +24,7 @@ public class SparseMatrix
         var di = matrix.Diagonal;
         var lowerValues = matrix.LowerValues;
         var upperValues = matrix.UpperValues;
-        
+
         var result = new GlobalVector(matrix.Diagonal.Length);
 
         for (var i = 0; i < matrix.Diagonal.Length; i++)

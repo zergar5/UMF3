@@ -1,3 +1,5 @@
-﻿namespace UMF3.Core.BoundaryConditions;
+﻿using UMF3.Core.Local;
 
-public readonly record struct SecondCondition(int[] GlobalNodeNumbers, double[] Theta);
+namespace UMF3.Core.BoundaryConditions;
+
+public record struct SecondCondition(LocalVector Vector);

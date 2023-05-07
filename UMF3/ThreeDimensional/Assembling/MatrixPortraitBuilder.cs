@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Xml.Linq;
-using UMF3.Core;
+﻿using UMF3.Core;
 using UMF3.Core.Global;
 using UMF3.Core.GridComponents;
 using UMF3.FEM.Assembling;

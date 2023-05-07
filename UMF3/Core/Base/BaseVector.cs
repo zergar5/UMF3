@@ -18,7 +18,7 @@ public class BaseVector
         set => Vector[index] = value;
     }
 
-    public static BaseVector MultiplyVectorOnNumber(double number, BaseVector localVector)
+    public static BaseVector Multiply(double number, BaseVector localVector)
     {
         for (var i = 0; i < localVector.Count; i++)
         {

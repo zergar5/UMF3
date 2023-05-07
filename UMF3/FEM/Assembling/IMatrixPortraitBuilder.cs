@@ -1,5 +1,4 @@
 ﻿using UMF3.Core;
-using UMF3.Core.GridComponents;
 
 namespace UMF3.FEM.Assembling;
 

@@ -2,7 +2,7 @@
 
 namespace UMF3.SLAE.Solvers;
 
-public interface ISolver
+public interface ISolver<TMatrix>
 {
-    public GlobalVector Solve(Equation equation);
+    public GlobalVector Solve(Equation<TMatrix> equation);
 }

@@ -1,3 +1,3 @@
 ﻿namespace UMF3.Core.BoundaryConditions;
 
-public readonly record struct FirstCondition(int[] GlobalNodeNumbers, double[] Us);
+public record struct FirstCondition(int NodeIndex, double Value);

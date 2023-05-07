@@ -1,3 +1,5 @@
-﻿namespace UMF3.Core.BoundaryConditions;
+﻿using UMF3.Core.Local;
 
-public readonly record struct ThirdCondition(int[] GlobalNodeNumber, double Beta, double[] U);
+namespace UMF3.Core.BoundaryConditions;
+
+public readonly record struct ThirdCondition(LocalMatrix Matrix, LocalVector Vector);

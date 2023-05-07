@@ -18,4 +18,88 @@ public class Element
         Height = height;
         MaterialId = materialId;
     }
+
+    public (int[], double[]) GetBoundNodeIndexes(Bound bound) =>
+        bound switch
+        {
+            Bound.Lower =>
+            (new[]
+            {
+                NodesIndexes[0],
+                NodesIndexes[1],
+                NodesIndexes[2],
+                NodesIndexes[3]
+            },
+            new[]
+            {
+                Length,
+                Width
+            }),
+            Bound.Front =>
+            (new[]
+            {
+                NodesIndexes[0],
+                NodesIndexes[1],
+                NodesIndexes[4],
+                NodesIndexes[5]
+            },
+            new[]
+            {
+                Width,
+                Height
+            }),
+            Bound.Back =>
+            (new[]
+            {
+                NodesIndexes[2],
+                NodesIndexes[3],
+                NodesIndexes[6],
+                NodesIndexes[7]
+            },
+            new[]
+            {
+                Width,
+                Height
+            }),
+            Bound.Left =>
+            (new[]
+            {
+                NodesIndexes[0],
+                NodesIndexes[2],
+                NodesIndexes[4],
+                NodesIndexes[6]
+            },
+            new[]
+            {
+                Length,
+                Height
+            }),
+            Bound.Right =>
+            (new[]
+            {
+                NodesIndexes[1],
+                NodesIndexes[3],
+                NodesIndexes[5],
+                NodesIndexes[7]
+            },
+            new[]
+            {
+                Length,
+                Height
+            }),
+            Bound.Upper =>
+            (new[]
+            {
+                NodesIndexes[4],
+                NodesIndexes[5],
+                NodesIndexes[6],
+                NodesIndexes[7]
+            },
+            new[]
+            {
+                Length,
+                Width
+            }),
+            _ => throw new ArgumentOutOfRangeException()
+        };
 }
