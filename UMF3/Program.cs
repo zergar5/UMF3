@@ -1,10 +1,9 @@
-﻿using System.Globalization;
-using System.Net.Http.Headers;
-using GridGenerator;
+﻿using GridGenerator;
 using GridGenerator.Area.Splitting;
-using UMF3.Core.Converters;
+using System.Globalization;
 using UMF3.Core.Global;
 using UMF3.Core.GridComponents;
+using UMF3.FEM;
 using UMF3.SLAE.Preconditions.LU;
 using UMF3.SLAE.Solvers;
 using UMF3.ThreeDimensional.Assembling;
@@ -88,28 +87,15 @@ var equation = globalAssembler
     .ApplyFirstConditions(firstConditions)
     .BuildEquation();
 
-var profileMatrix = new ProfileMatrix
-(
-    new[] { 0, 0, 1, 3, 5 },
-    new[] { 1d, 1d, 1d, 1d },
-    new[] { 2d, 2d, 0d, 2d, 0d },
-    new[] { 3d, 3d, 0d, 3d, 0d }
-);
-
 var luPreconditioner = new LUPreconditioner();
 
 var solver = new LUProfile();
 var sparseSolver = new BSGSTAB(luPreconditioner, new LUSparse(luPreconditioner));
+sparseSolver.Solve(equation);
 
-var result = solver
-    .Solve
-    (
-        new Equation<ProfileMatrix>
-        (
-            profileMatrix, 
-            new GlobalVector(new[] { 0d, 0d, 0d, 0d }), 
-            new GlobalVector(new[] { 7d, 6d, 3d, 3d })
-        )
-     );
+var femSolution = new FEMSolution(grid, equation.Solution, new LinearFunctionsProvider());
 
-Console.WriteLine();
+foreach (var node in grid.Nodes)
+{
+    femSolution.Calculate(node);
+}

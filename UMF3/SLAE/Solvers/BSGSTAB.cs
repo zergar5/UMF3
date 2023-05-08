@@ -1,4 +1,5 @@
 ﻿using UMF3.Core.Global;
+using UMF3.FEM;
 using UMF3.SLAE.Preconditions.LU;
 
 namespace UMF3.SLAE.Solvers;
@@ -36,7 +37,7 @@ public class BSGSTAB : ISolver<SparseMatrix>
     private void IterationProcess(Equation<SparseMatrix> equation)
     {
         Console.WriteLine("BSGSTAB");
-        
+
         var residual = _r0.Norm / equation.RightSide.Norm;
 
         for (var i = 1; i <= MethodsConfig.MaxIterations && residual > Math.Pow(MethodsConfig.Eps, 2); i++)
@@ -62,7 +63,7 @@ public class BSGSTAB : ISolver<SparseMatrix>
             _z = GlobalVector.Sum
             (
                  GlobalVector.Subtract(GlobalVector.Multiply(beta, _r),
-                 GlobalVector.Multiply(beta * gamma, LAUz)), 
+                 GlobalVector.Multiply(beta * gamma, LAUz)),
                  rNext
             );
 

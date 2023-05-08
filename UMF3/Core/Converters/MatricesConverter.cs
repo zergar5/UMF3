@@ -23,12 +23,12 @@ public class MatricesConverter
 
             for (var j = sparseMatrix.RowsIndexes[i - 1]; j < sparseMatrix.RowsIndexes[i]; j++)
             {
-                if(sparseMatrix.LowerValues[j] < MethodsConfig.Eps 
+                if (sparseMatrix.LowerValues[j] < MethodsConfig.Eps
                    && sparseMatrix.UpperValues[j] < MethodsConfig.Eps) continue;
                 rowBegin = columnsIndexes[j];
                 break;
             }
-            
+
             rowsIndexes[i] = rowsIndexes[i - 1] + (i - 1 - rowBegin);
 
             for (var j = rowsIndexes[i - 1]; j < rowsIndexes[i]; j++, rowBegin++)

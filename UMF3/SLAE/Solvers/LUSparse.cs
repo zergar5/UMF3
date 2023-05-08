@@ -1,5 +1,4 @@
 ﻿using UMF3.Core.Global;
-using UMF3.Core.Local;
 using UMF3.SLAE.Preconditions.LU;
 
 namespace UMF3.SLAE.Solvers;

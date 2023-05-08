@@ -1,6 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using UMF3.Core.Global;
-using UMF3.Core.Local;
+﻿using UMF3.Core.Global;
+using UMF3.FEM;
 using UMF3.SLAE.Preconditions.LU;
 
 namespace UMF3.SLAE.Solvers;
@@ -39,7 +38,7 @@ public class LOS : ISolver<SparseMatrix>
     {
         Console.WriteLine("LOS");
 
-        var residual= GlobalVector.ScalarProduct(_r, _r);
+        var residual = GlobalVector.ScalarProduct(_r, _r);
         var residualNext = residual;
 
         for (var i = 1; i <= MethodsConfig.MaxIterations && residualNext > Math.Pow(MethodsConfig.Eps, 2); i++)
