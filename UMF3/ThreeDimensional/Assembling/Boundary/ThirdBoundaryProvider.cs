@@ -9,6 +9,7 @@ public class ThirdBoundaryProvider
 {
     private readonly FirstBoundaryProvider _firstBoundaryProvider;
     private readonly SecondBoundaryProvider _secondBoundaryProvider;
+    private List<ThirdCondition> _conditions = new();
 
     public ThirdBoundaryProvider(FirstBoundaryProvider firstBoundaryProvider,
         SecondBoundaryProvider secondBoundaryProvider)
@@ -17,8 +18,15 @@ public class ThirdBoundaryProvider
         _secondBoundaryProvider = secondBoundaryProvider;
     }
 
-    public ThirdCondition[] GetConditions(int[] elementsIndexes, Bound[] bounds,
-        Func<Node3D, double> uS, Func<Node3D, double> uC, double beta)
+    public ThirdCondition[] GetConditions()
+    {
+        var conditions = _conditions.ToArray();
+        _conditions.Clear();
+        return conditions;
+    }
+
+    public ThirdBoundaryProvider CreateConditions(int[] elementsIndexes, Bound[] bounds,
+        Func<Node3D, double> uS, Func<Node3D, double> uC, double[] betas)
     {
         var conditions = new List<ThirdCondition>(elementsIndexes.Length);
 
@@ -27,13 +35,13 @@ public class ThirdBoundaryProvider
             var (indexes, hs) =
                 _secondBoundaryProvider.Grid.Elements[elementsIndexes[i]].GetBoundNodeIndexes(bounds[i]);
 
-            var matrix = BaseMatrix.Multiply(beta, _secondBoundaryProvider.GetMatrix(hs[0], hs[1]));
+            var matrix = BaseMatrix.Multiply(betas[i], _secondBoundaryProvider.GetMatrix(hs[0], hs[1]));
 
             var material =
                 _secondBoundaryProvider.MaterialFactory.GetById(_secondBoundaryProvider.Grid
                     .Elements[elementsIndexes[i]].MaterialId);
 
-            var vector = GetVector(indexes, uS, uC, material, beta);
+            var vector = GetVector(indexes, uS, uC, material, betas[i]);
 
             vector = matrix * vector;
 
@@ -43,7 +51,9 @@ public class ThirdBoundaryProvider
                 new LocalVector(complexIndexes, vector)));
         }
 
-        return conditions.ToArray();
+        _conditions.AddRange(conditions);
+
+        return this;
     }
 
     private BaseVector GetVector(int[] indexes, Func<Node3D, double> uS, Func<Node3D, double> uC, Material material, double beta)

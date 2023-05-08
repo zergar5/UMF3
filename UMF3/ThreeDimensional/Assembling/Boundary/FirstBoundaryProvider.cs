@@ -14,7 +14,7 @@ public class FirstBoundaryProvider
     {
         _grid = grid;
         _uS = uS;
-        _uC=uC;
+        _uC = uC;
     }
 
     public FirstCondition[] GetConditions(int[] elementsIndexes, Bound[] bounds)

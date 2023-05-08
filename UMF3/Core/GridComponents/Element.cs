@@ -45,7 +45,7 @@ public class Element
             },
             new[]
             {
-                Width,
+                Length,
                 Height
             }),
             Bound.Back =>
@@ -58,7 +58,7 @@ public class Element
             },
             new[]
             {
-                Width,
+                Length,
                 Height
             }),
             Bound.Left =>
@@ -71,7 +71,7 @@ public class Element
             },
             new[]
             {
-                Length,
+                Width,
                 Height
             }),
             Bound.Right =>
@@ -84,7 +84,7 @@ public class Element
             },
             new[]
             {
-                Length,
+                Width,
                 Height
             }),
             Bound.Upper =>

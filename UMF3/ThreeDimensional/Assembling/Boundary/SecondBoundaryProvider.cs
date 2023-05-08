@@ -13,6 +13,7 @@ public class SecondBoundaryProvider
     public readonly Grid<Node3D> Grid;
     public readonly MaterialFactory MaterialFactory;
     private readonly BaseMatrix _templateMatrix;
+    private List<SecondCondition> _conditions = new();
 
     public SecondBoundaryProvider(Grid<Node3D> grid, MaterialFactory materialFactory, ITemplateMatrixProvider templateMatrixProvider)
     {
@@ -21,7 +22,14 @@ public class SecondBoundaryProvider
         _templateMatrix = templateMatrixProvider.GetMatrix();
     }
 
-    public SecondCondition[] GetConditions(int[] elementsIndexes, Bound[] bounds,
+    public SecondCondition[] GetConditions()
+    {
+        var conditions = _conditions.ToArray();
+        _conditions.Clear();
+        return conditions;
+    }
+
+    public SecondBoundaryProvider CreateConditions(int[] elementsIndexes, Bound[] bounds,
         Func<Node3D, double> uS, Func<Node3D, double> uC)
     {
         var conditions = new List<SecondCondition>(elementsIndexes.Length);
@@ -42,7 +50,9 @@ public class SecondBoundaryProvider
             conditions.Add(new SecondCondition(new LocalVector(complexIndexes, vector)));
         }
 
-        return conditions.ToArray();
+        _conditions.AddRange(conditions);
+
+        return this;
     }
 
     public BaseMatrix GetMatrix(double h1, double h2)

@@ -1,5 +1,4 @@
-﻿using System.Xml.Linq;
-using UMF3.Core.GridComponents;
+﻿using UMF3.Core.GridComponents;
 
 namespace UMF3.ThreeDimensional.Assembling.Local;
 

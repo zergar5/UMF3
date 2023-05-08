@@ -10,22 +10,21 @@ public class MatricesConverter
         var matrix = sparseMatrix.Clone();
         var diagonal = matrix.Diagonal;
         var rowsIndexes = matrix.RowsIndexes;
-        var columnsIndexes = matrix.ColumnsIndexes;
         var lowerValues = new List<double>();
         var upperValues = new List<double>();
 
-        for (var i = 2; i < rowsIndexes.Length; i++)
+        for (var i = 1; i < rowsIndexes.Length; i++)
         {
             var columns =
-                new Span<int>(columnsIndexes, sparseMatrix.RowsIndexes[i - 1], sparseMatrix.RowsIndexes[i] - sparseMatrix.RowsIndexes[i - 1]).ToArray();
+                new Span<int>(matrix.ColumnsIndexes, sparseMatrix.RowsIndexes[i - 1], sparseMatrix.RowsIndexes[i] - sparseMatrix.RowsIndexes[i - 1]).ToArray();
 
             var rowBegin = i - 1;
 
             for (var j = sparseMatrix.RowsIndexes[i - 1]; j < sparseMatrix.RowsIndexes[i]; j++)
             {
-                if (sparseMatrix.LowerValues[j] < MethodsConfig.Eps
-                   && sparseMatrix.UpperValues[j] < MethodsConfig.Eps) continue;
-                rowBegin = columnsIndexes[j];
+                if (Math.Abs(sparseMatrix.LowerValues[j]) < MethodsConfig.Eps
+                   && Math.Abs(sparseMatrix.UpperValues[j]) < MethodsConfig.Eps) continue;
+                rowBegin = matrix.ColumnsIndexes[j];
                 break;
             }
 
