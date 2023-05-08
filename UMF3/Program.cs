@@ -1,8 +1,12 @@
-﻿using GridGenerator;
+﻿using System.Globalization;
+using System.Net.Http.Headers;
+using GridGenerator;
 using GridGenerator.Area.Splitting;
+using UMF3.Core.Converters;
 using UMF3.Core.Global;
 using UMF3.Core.GridComponents;
 using UMF3.SLAE.Preconditions.LU;
+using UMF3.SLAE.Solvers;
 using UMF3.ThreeDimensional.Assembling;
 using UMF3.ThreeDimensional.Assembling.Boundary;
 using UMF3.ThreeDimensional.Assembling.Global;
@@ -10,21 +14,23 @@ using UMF3.ThreeDimensional.Assembling.Local;
 using UMF3.ThreeDimensional.MatrixTemplates;
 using UMF3.ThreeDimensional.Parameters;
 
+Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
 var gridBuilder3D = new GridBuilder3D();
 var grid = gridBuilder3D
     .SetXAxis(new AxisSplitParameter(
             new[] { 0d, 1d },
-            new UniformSplitter(1)
+            new UniformSplitter(2)
         )
     )
     .SetYAxis(new AxisSplitParameter(
             new[] { 0d, 1d },
-            new UniformSplitter(1)
+            new UniformSplitter(2)
         )
     )
     .SetZAxis(new AxisSplitParameter(
             new[] { 0d, 1d },
-            new UniformSplitter(1)
+            new UniformSplitter(2)
         )
     )
     .Build();
@@ -71,23 +77,39 @@ var firstConditionsProvider =
         p => p.X - p.Y - p.Z
     );
 
-var firstConditions = 
+var firstConditions =
     firstConditionsProvider.GetConditions
-    (new[] { 0 }, new[] {Bound.Lower});
+    (
+        new[] { 0, 0, 1, 2, 3, 4, 5, 6, 7, 7 },
+        new[] { Bound.Lower, Bound.Front, Bound.Right, Bound.Left, Bound.Back, Bound.Front, Bound.Right, Bound.Left, Bound.Back, Bound.Upper });
 
 var equation = globalAssembler
     .AssembleEquation(grid)
     .ApplyFirstConditions(firstConditions)
     .BuildEquation();
 
-var sparseMatrix = new SparseMatrix
+var profileMatrix = new ProfileMatrix
 (
-    new[] { 0, 0, 1, 2, 4 },
-    new[] { 0, 0, 0, 1 },
+    new[] { 0, 0, 1, 3, 5 },
     new[] { 1d, 1d, 1d, 1d },
-    new[] { 2d, 2d, 2d, 2d },
-    new[] { 3d, 3d, 3d, 3d }
+    new[] { 2d, 2d, 0d, 2d, 0d },
+    new[] { 3d, 3d, 0d, 3d, 0d }
 );
-sparseMatrix = new LUPreconditioner().Decompose(sparseMatrix);
+
+var luPreconditioner = new LUPreconditioner();
+
+var solver = new LUProfile();
+var sparseSolver = new BSGSTAB(luPreconditioner, new LUSparse(luPreconditioner));
+
+var result = solver
+    .Solve
+    (
+        new Equation<ProfileMatrix>
+        (
+            profileMatrix, 
+            new GlobalVector(new[] { 0d, 0d, 0d, 0d }), 
+            new GlobalVector(new[] { 7d, 6d, 3d, 3d })
+        )
+     );
 
 Console.WriteLine();

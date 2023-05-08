@@ -1,6 +1,5 @@
 ﻿using UMF3.Core.BoundaryConditions;
 using UMF3.Core.Global;
-using UMF3.Core.Local;
 using UMF3.FEM.Assembling.Global;
 
 namespace UMF3.ThreeDimensional.Assembling.Global;

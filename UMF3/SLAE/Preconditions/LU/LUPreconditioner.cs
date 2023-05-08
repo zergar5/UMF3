@@ -1,5 +1,4 @@
 ﻿using UMF3.Core.Global;
-using UMF3.Core.Local;
 
 namespace UMF3.SLAE.Preconditions.LU;
 
@@ -29,7 +28,7 @@ public class LUPreconditioner : IPreconditioner<SparseMatrix>
                 }
 
                 preconditionMatrix.LowerValues[j] -= sumL;
-                preconditionMatrix.UpperValues[j] = (preconditionMatrix.UpperValues[j] - sumU) / preconditionMatrix.Diagonal[j];
+                preconditionMatrix.UpperValues[j] = (preconditionMatrix.UpperValues[j] - sumU) / preconditionMatrix.Diagonal[preconditionMatrix.ColumnsIndexes[j]];
 
                 sumD += preconditionMatrix.LowerValues[j] * preconditionMatrix.UpperValues[j];
             }

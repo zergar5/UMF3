@@ -1,6 +1,4 @@
-﻿using UMF3.Core.Local;
-
-namespace UMF3.Core.Global;
+﻿namespace UMF3.Core.Global;
 
 public class SparseMatrix
 {

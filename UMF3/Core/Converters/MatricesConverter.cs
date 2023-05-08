@@ -1,4 +1,5 @@
 ﻿using UMF3.Core.Global;
+using UMF3.SLAE;
 
 namespace UMF3.Core.Converters;
 
@@ -18,8 +19,16 @@ public class MatricesConverter
             var columns =
                 new Span<int>(columnsIndexes, sparseMatrix.RowsIndexes[i - 1], sparseMatrix.RowsIndexes[i] - sparseMatrix.RowsIndexes[i - 1]).ToArray();
 
-            var rowBegin = columnsIndexes[sparseMatrix.RowsIndexes[i - 1]];
+            var rowBegin = i - 1;
 
+            for (var j = sparseMatrix.RowsIndexes[i - 1]; j < sparseMatrix.RowsIndexes[i]; j++)
+            {
+                if(sparseMatrix.LowerValues[j] < MethodsConfig.Eps 
+                   && sparseMatrix.UpperValues[j] < MethodsConfig.Eps) continue;
+                rowBegin = columnsIndexes[j];
+                break;
+            }
+            
             rowsIndexes[i] = rowsIndexes[i - 1] + (i - 1 - rowBegin);
 
             for (var j = rowsIndexes[i - 1]; j < rowsIndexes[i]; j++, rowBegin++)

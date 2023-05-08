@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using UMF3.Core;
+﻿using UMF3.Core;
 using UMF3.Core.BoundaryConditions;
 using UMF3.Core.GridComponents;
 

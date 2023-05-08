@@ -1,4 +1,6 @@
-﻿namespace UMF3.Core.Global;
+﻿using UMF3.Core.Local;
+
+namespace UMF3.Core.Global;
 
 public class GlobalVector
 {
@@ -69,10 +71,10 @@ public class GlobalVector
 
         for (var i = 0; i < localVector1.Count; i++)
         {
-            localVector2[i] = localVector1[i] + localVector2[i];
+            localVector1[i] += localVector2[i];
         }
 
-        return localVector2;
+        return localVector1;
     }
 
     public static GlobalVector Subtract(GlobalVector localVector1, GlobalVector localVector2)
@@ -85,6 +87,16 @@ public class GlobalVector
         }
 
         return localVector2;
+    }
+
+    public static GlobalVector Multiply(double number, GlobalVector vector)
+    {
+        for (var i = 0; i < vector.Count; i++)
+        {
+            vector[i] *= number;
+        }
+
+        return vector;
     }
 
     public IEnumerator<double> GetEnumerator() => ((IEnumerable<double>)Vector).GetEnumerator();

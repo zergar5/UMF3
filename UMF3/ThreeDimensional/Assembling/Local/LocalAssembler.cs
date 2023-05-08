@@ -96,13 +96,15 @@ public class LocalAssembler : ILocalAssembler
         var stiffness = GetStiffnessMatrix(element);
         var material = _materialFactory.GetById(element.MaterialId);
 
+        stiffness = BaseMatrix.Multiply(material.Lambda, stiffness);
+
         var matrix = new BaseMatrix(element.NodesIndexes.Length * 2);
 
         for (var i = 0; i < element.NodesIndexes.Length; i++)
         {
             for (var j = 0; j < element.NodesIndexes.Length; j++)
             {
-                matrix[i * 2, j * 2] = material.Lambda * stiffness[i, j] - Math.Pow(material.Omega, 2) * material.Chi * mass[i, j];
+                matrix[i * 2, j * 2] = stiffness[i, j] - Math.Pow(material.Omega, 2) * material.Chi * mass[i, j];
                 matrix[i * 2, j * 2 + 1] = -material.Omega * material.Sigma * mass[i, j];
                 matrix[i * 2 + 1, j * 2] = -matrix[i * 2, j * 2 + 1];
                 matrix[i * 2 + 1, j * 2 + 1] = matrix[i * 2, j * 2];

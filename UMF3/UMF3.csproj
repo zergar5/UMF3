@@ -14,6 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="SLAE\Preconditions\LU\LUPreconditioner.cs~RF2e886adb.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Core\Converters\" />
     <Folder Include="FEM\Assembling\Global\" />
     <Folder Include="GridGenerator\" />
