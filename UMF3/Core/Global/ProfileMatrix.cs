@@ -3,19 +3,19 @@
 public class ProfileMatrix
 {
     public double[] Diagonal { get; }
-    public double[] LowerValues { get; }
-    public double[] UpperValues { get; }
+    public List<double> LowerValues { get; }
+    public List<double> UpperValues { get; }
     public int[] RowsIndexes { get; }
 
     public int CountRows => Diagonal.Length;
     public int CountColumns => Diagonal.Length;
 
-    public ProfileMatrix(int[] rowsIndexes, double[] diagonal, double[] lowerValues, double[] upperValues)
+    public ProfileMatrix(int[] rowsIndexes, double[] diagonal, List<double> lowerValues, List<double> upperValues)
     {
+        RowsIndexes = rowsIndexes;
         Diagonal = diagonal;
         LowerValues = lowerValues;
         UpperValues = upperValues;
-        RowsIndexes = rowsIndexes;
     }
 
     public static GlobalVector operator *(ProfileMatrix matrix, GlobalVector vector)
@@ -51,26 +51,18 @@ public class ProfileMatrix
                 var sumL = 0d;
                 var sumU = 0d;
 
-                var ik = i - (RowsIndexes[i + 1] - RowsIndexes[i]);
-                var jk = j - (RowsIndexes[j + 1] - RowsIndexes[j]);
+                var k = j - (RowsIndexes[j + 1] - RowsIndexes[j]);
 
-                var k = Math.Max(ik, jk);
+                var ik = RowsIndexes[i];
+                var kj = RowsIndexes[j];
 
-                if (ik >= jk)
-                {
-                    jk = RowsIndexes[j] + (ik - jk);
-                    ik = RowsIndexes[i];
-                }
-                else
-                {
-                    jk = RowsIndexes[j];
-                    ik = RowsIndexes[i] + (jk - ik);
-                }
+                if (k - (i - (RowsIndexes[i + 1] - RowsIndexes[i])) < 0) kj -= k - (i - (RowsIndexes[i + 1] - RowsIndexes[i]));
+                else ik += k - (i - (RowsIndexes[i + 1] - RowsIndexes[i]));
 
-                for (; k < j; k++, ik++, jk++)
+                for (; ik < ij; ik++, kj++)
                 {
-                    sumL += LowerValues[ik] * UpperValues[jk];
-                    sumU += LowerValues[jk] * UpperValues[ik];
+                    sumL += LowerValues[ik] * UpperValues[kj];
+                    sumU += LowerValues[kj] * UpperValues[ik];
                 }
 
                 LowerValues[ij] -= sumL;

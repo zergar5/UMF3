@@ -79,4 +79,22 @@ public class SparseMatrix
 
         return new SparseMatrix(rowIndexes, columnIndexes, diagonal, lowerValues, upperValues);
     }
+
+    public int[] CloneRows()
+    {
+        var rowIndexes = new int[RowsIndexes.Length];
+
+        Array.Copy(RowsIndexes, rowIndexes, RowsIndexes.Length);
+
+        return rowIndexes;
+    }
+
+    public double[] CloneDiagonal()
+    {
+        var diagonal = new double[Diagonal.Length];
+
+        Array.Copy(Diagonal, diagonal, Diagonal.Length);
+
+        return diagonal;
+    }
 }

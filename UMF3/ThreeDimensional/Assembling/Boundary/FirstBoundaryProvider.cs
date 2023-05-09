@@ -40,6 +40,62 @@ public class FirstBoundaryProvider
         return conditions.ToArray();
     }
 
+    public FirstCondition[] GetConditions(int elementsByLength, int elementsByWidth, int elementsByHeight)
+    {
+        var elementsIndexes = new List<int>();
+        var bounds = new List<Bound>();
+
+        for (var i = 0; i < elementsByLength * elementsByWidth; i++)
+        {
+            elementsIndexes.Add(i);
+            bounds.Add(Bound.Lower);
+        }
+
+        for (var i = 0; i < elementsByHeight; i++)
+        {
+            for (var j = 0; j < elementsByLength; j++)
+            {
+                elementsIndexes.Add(i * elementsByWidth * elementsByLength + j);
+                bounds.Add(Bound.Front);
+            }
+        }
+
+        for (var i = 0; i < elementsByHeight; i++)
+        {
+            for (var j = 0; j < elementsByWidth; j++)
+            {
+                elementsIndexes.Add(i * elementsByWidth * elementsByLength + j * elementsByLength + (elementsByWidth - 1));
+                bounds.Add(Bound.Right);
+            }
+        }
+
+        for (var i = 0; i < elementsByHeight; i++)
+        {
+            for (var j = 0; j < elementsByWidth; j++)
+            {
+                elementsIndexes.Add(i * elementsByWidth * elementsByLength + j * elementsByLength);
+                bounds.Add(Bound.Left);
+            }
+        }
+
+        for (var i = 0; i < elementsByHeight; i++)
+        {
+            for (var j = 0; j < elementsByWidth; j++)
+            {
+                elementsIndexes.Add(i * elementsByWidth * elementsByLength + j + elementsByLength * (elementsByWidth - 1));
+                bounds.Add(Bound.Back);
+            }
+        }
+
+        for (var i = elementsByWidth * elementsByLength * (elementsByHeight - 1); i < elementsByWidth * elementsByLength * elementsByHeight; i++)
+        {
+            elementsIndexes.Add(i);
+            bounds.Add(Bound.Upper);
+        }
+
+        return GetConditions(elementsIndexes.ToArray(), bounds.ToArray());
+    }
+
     public double GetSValue(int index)
     {
         return _uS(_grid.Nodes[index]);

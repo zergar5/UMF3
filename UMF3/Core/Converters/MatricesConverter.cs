@@ -7,32 +7,30 @@ public class MatricesConverter
 {
     public static ProfileMatrix Convert(SparseMatrix sparseMatrix)
     {
-        var matrix = sparseMatrix.Clone();
-        var diagonal = matrix.Diagonal;
-        var rowsIndexes = matrix.RowsIndexes;
+        var diagonal = sparseMatrix.CloneDiagonal();
+        var rowsIndexes = sparseMatrix.CloneRows();
         var lowerValues = new List<double>();
         var upperValues = new List<double>();
 
         for (var i = 1; i < rowsIndexes.Length; i++)
         {
-            var columns =
-                new Span<int>(matrix.ColumnsIndexes, sparseMatrix.RowsIndexes[i - 1], sparseMatrix.RowsIndexes[i] - sparseMatrix.RowsIndexes[i - 1]).ToArray();
-
             var rowBegin = i - 1;
 
-            for (var j = sparseMatrix.RowsIndexes[i - 1]; j < sparseMatrix.RowsIndexes[i]; j++)
+            var j = sparseMatrix.RowsIndexes[i - 1];
+
+            for (; j < sparseMatrix.RowsIndexes[i]; j++)
             {
                 if (Math.Abs(sparseMatrix.LowerValues[j]) < MethodsConfig.Eps
                    && Math.Abs(sparseMatrix.UpperValues[j]) < MethodsConfig.Eps) continue;
-                rowBegin = matrix.ColumnsIndexes[j];
+                rowBegin = sparseMatrix.ColumnsIndexes[j];
                 break;
             }
 
             rowsIndexes[i] = rowsIndexes[i - 1] + (i - 1 - rowBegin);
 
-            for (var j = rowsIndexes[i - 1]; j < rowsIndexes[i]; j++, rowBegin++)
+            for (var k = rowsIndexes[i - 1]; k < rowsIndexes[i]; k++, rowBegin++)
             {
-                if (columns.Any(x => x == rowBegin))
+                if (sparseMatrix[i - 1, rowBegin] != -1)
                 {
                     lowerValues.Add(sparseMatrix.LowerValues[sparseMatrix[i - 1, rowBegin]]);
                     upperValues.Add(sparseMatrix.UpperValues[sparseMatrix[i - 1, rowBegin]]);
@@ -45,6 +43,6 @@ public class MatricesConverter
             }
         }
 
-        return new ProfileMatrix(rowsIndexes, diagonal, lowerValues.ToArray(), upperValues.ToArray());
+        return new ProfileMatrix(rowsIndexes, diagonal, lowerValues, upperValues);
     }
 }
