@@ -1,4 +1,6 @@
-﻿namespace UMF3.Core.Global;
+﻿using UMF3.FEM;
+
+namespace UMF3.Core.Global;
 
 public class ProfileMatrix
 {
@@ -72,6 +74,8 @@ public class ProfileMatrix
             }
 
             Diagonal[i] -= sumD;
+
+            //CourseHolder.GetInfo(i, 0d);
         }
 
         return this;

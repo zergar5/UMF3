@@ -45,6 +45,21 @@ public class FEMSolution
         return (double.NaN, double.NaN);
     }
 
+    public double CalcError(Func<Node3D, double> uS, Func<Node3D, double> uC)
+    {
+        var trueSolution = new GlobalVector(_solution.Count);
+
+        for (var i = 0; i < _solution.Count / 2; i++)
+        {
+            trueSolution[i * 2] = uS(_grid.Nodes[i]);
+            trueSolution[i * 2 + 1] = uC(_grid.Nodes[i]);
+        }
+
+        GlobalVector.Subtract(_solution, trueSolution);
+
+        return trueSolution.Norm;
+    }
+
     private bool ElementHas(Element element, Node3D node)
     {
         var leftCornerNode = _grid.Nodes[element.NodesIndexes[0]];

@@ -36,7 +36,7 @@ public class BSGSTAB : ISolver<SparseMatrix>
 
     private void IterationProcess(Equation<SparseMatrix> equation)
     {
-        Console.WriteLine("BSGSTAB");
+        //Console.WriteLine("BSGSTAB");
 
         var residual = _r0.Norm / equation.RightSide.Norm;
 
@@ -71,11 +71,11 @@ public class BSGSTAB : ISolver<SparseMatrix>
 
             residual = _r.Norm / equation.RightSide.Norm;
 
-            CourseHolder.GetInfo(i, residual);
+            //CourseHolder.GetInfo(i, residual);
         }
 
         _luSparse.CalcXWithoutMemory(_preconditionMatrix, equation.Solution);
 
-        Console.WriteLine();
+        //Console.WriteLine();
     }
 }
