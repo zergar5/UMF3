@@ -75,7 +75,6 @@ public class ProfileMatrix
 
             Diagonal[i] -= sumD;
 
-            //CourseHolder.GetInfo(i, 0d);
         }
 
         return this;

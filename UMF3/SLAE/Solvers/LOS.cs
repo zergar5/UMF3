@@ -36,7 +36,7 @@ public class LOS : ISolver<SparseMatrix>
 
     private void IterationProcess(Equation<SparseMatrix> equation)
     {
-        //Console.WriteLine("LOS");
+        Console.WriteLine("LOS");
 
         var residual = GlobalVector.ScalarProduct(_r, _r);
         var residualNext = residual;
@@ -65,9 +65,9 @@ public class LOS : ISolver<SparseMatrix>
 
             residualNext = GlobalVector.ScalarProduct(_r, _r) / residual;
 
-            //CourseHolder.GetInfo(i, residualNext);
+            CourseHolder.GetInfo(i, residualNext);
         }
 
-        //Console.WriteLine();
+        Console.WriteLine();
     }
 }

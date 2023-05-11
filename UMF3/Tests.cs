@@ -64,7 +64,7 @@ public static class Tests
         }
     }
 
-    private static Grid<Node3D> Grid1000
+    public static Grid<Node3D> Grid1000
     {
         get
         {
@@ -90,7 +90,7 @@ public static class Tests
         }
     }
 
-    private static Grid<Node3D> Grid27000
+    public static Grid<Node3D> Grid27000
     {
         get
         {
@@ -134,6 +134,24 @@ public static class Tests
         }
     }
 
+    private static FirstCondition[] FirstConditions1000Big
+    {
+        get
+        {
+            var grid = Grid1000;
+
+            var firstConditionsProvider =
+                new FirstBoundaryProvider
+                (
+                    grid,
+                    p => p.X + p.Y + p.Z,
+                    p => p.X - p.Y - p.Z
+                );
+
+            return firstConditionsProvider.GetConditions(9, 9, 9);
+        }
+    }
+
     private static FirstCondition[] FirstConditions27000
     {
         get
@@ -152,8 +170,8 @@ public static class Tests
         }
     }
 
-    private static Func<Node3D, double> US => p => Exp(p.X * p.Y);
-    private static Func<Node3D, double> UC => p => Exp(p.Z * p.Y);
+    public static Func<Node3D, double> US => p => Exp(p.X * p.Y);
+    public static Func<Node3D, double> UC => p => Exp(p.Z * p.Y);
 
     public static Equation<ProfileMatrix> ProfileTest1000(double lambdaTest, double sigmaTest, double chiTest,
         double omegaTest)
@@ -210,7 +228,7 @@ public static class Tests
     public static Equation<ProfileMatrix> ProfileTest27000(double lambdaTest, double sigmaTest, double chiTest,
         double omegaTest)
     {
-        var grid = Grid1000;
+        var grid = Grid27000;
 
         var materialFactory = new MaterialFactory
         (
@@ -313,7 +331,7 @@ public static class Tests
     public static Equation<SparseMatrix> SparseTest27000(double lambdaTest, double sigmaTest, double chiTest,
         double omegaTest)
     {
-        var grid = Grid1000;
+        var grid = Grid27000;
 
         var materialFactory = new MaterialFactory
         (
@@ -1063,5 +1081,41 @@ public static class Tests
 
         var profileMatrix = MatricesConverter.Convert(equation.Matrix);
         return new Equation<ProfileMatrix>(profileMatrix, equation.Solution.Clone(), equation.RightSide.Clone());
+    }
+
+    public static Equation<SparseMatrix> BigTest()
+    {
+        var grid = Grid1000;
+
+        var fS = new RightPartParameter(FS, grid);
+        var fC = new RightPartParameter(FC, grid);
+
+        var localAssembler = new LocalAssembler
+        (
+            _massTemplateProvider,
+            _stiffnessXTemplateProvider,
+            _stiffnessYTemplateProvider,
+            _stiffnessZTemplateProvider,
+            _materialFactory,
+            fS,
+            fC
+        );
+
+        var globalAssembler = new GlobalAssembler<Node3D, SparseMatrix>
+        (
+            _matrixPortraitBuilder,
+            localAssembler,
+            _inserter,
+            _gaussExcluder
+        );
+
+        var firstConditions = FirstConditions1000Big;
+
+        var equation = globalAssembler
+            .AssembleEquation(grid)
+            .ApplyFirstConditions(firstConditions)
+            .BuildEquation();
+
+        return equation;
     }
 }

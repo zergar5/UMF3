@@ -14,13 +14,11 @@ var sparseSolver1 = new LOS(luPreconditioner, new LUSparse(luPreconditioner));
 var sparseSolver2 = new BSGSTAB(luPreconditioner, new LUSparse(luPreconditioner));
 var profileSolver = new LUProfile();
 
-var equation = Tests.AllConditionsSparseTest();
+var equation = Tests.AllConditionsProfileTest();
 
-var solution = sparseSolver1.Solve(equation);
+var solution = profileSolver.Solve(equation);
 
 var femSolution = new FEMSolution(Tests.Grid, solution, linearFunctionsProvider);
 var error = femSolution.CalcError(p => p.X + p.Y + p.Z, p => p.X - p.Y - p.Z);
-var valueInPoint = femSolution.Calculate(new Node3D(0.5, 0.5, 0.5));
 
 Console.WriteLine(error);
-Console.WriteLine(valueInPoint);
