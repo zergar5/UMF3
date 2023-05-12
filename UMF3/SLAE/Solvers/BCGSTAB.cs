@@ -4,7 +4,7 @@ using UMF3.SLAE.Preconditions.LU;
 
 namespace UMF3.SLAE.Solvers;
 
-public class BSGSTAB : ISolver<SparseMatrix>
+public class BCGSTAB : ISolver<SparseMatrix>
 {
     private readonly LUPreconditioner _luPreconditioner;
     private readonly LUSparse _luSparse;
@@ -13,7 +13,7 @@ public class BSGSTAB : ISolver<SparseMatrix>
     private GlobalVector _r;
     private GlobalVector _z;
 
-    public BSGSTAB(LUPreconditioner luPreconditioner, LUSparse luSparse)
+    public BCGSTAB(LUPreconditioner luPreconditioner, LUSparse luSparse)
     {
         _luPreconditioner = luPreconditioner;
         _luSparse = luSparse;
@@ -36,7 +36,7 @@ public class BSGSTAB : ISolver<SparseMatrix>
 
     private void IterationProcess(Equation<SparseMatrix> equation)
     {
-        //Console.WriteLine("BSGSTAB");
+        Console.WriteLine("BCGSTAB");
 
         var residual = _r0.Norm / equation.RightSide.Norm;
 
@@ -71,11 +71,11 @@ public class BSGSTAB : ISolver<SparseMatrix>
 
             residual = _r.Norm / equation.RightSide.Norm;
 
-            //CourseHolder.GetInfo(i, residual);
+            CourseHolder.GetInfo(i, residual);
         }
 
         _luSparse.CalcXWithoutMemory(_preconditionMatrix, equation.Solution);
 
-        //Console.WriteLine();
+        Console.WriteLine();
     }
 }

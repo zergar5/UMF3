@@ -11,7 +11,7 @@ var luPreconditioner = new LUPreconditioner();
 var linearFunctionsProvider = new LinearFunctionsProvider();
 
 var sparseSolver1 = new LOS(luPreconditioner, new LUSparse(luPreconditioner));
-var sparseSolver2 = new BSGSTAB(luPreconditioner, new LUSparse(luPreconditioner));
+var sparseSolver2 = new BCGSTAB(luPreconditioner, new LUSparse(luPreconditioner));
 var profileSolver = new LUProfile();
 
 var equation = Tests.AllConditionsProfileTest();
